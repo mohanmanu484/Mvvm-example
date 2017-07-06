@@ -24,6 +24,8 @@ public class MvvmFragmment extends BaseFragment implements MovieContract.View{
     MyViewModel myViewModel=new MyViewModel();
 
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -44,8 +46,5 @@ public class MvvmFragmment extends BaseFragment implements MovieContract.View{
     }
 
 
-    @Override
-    public String getUserId() {
-        return null;
-    }
+
 }

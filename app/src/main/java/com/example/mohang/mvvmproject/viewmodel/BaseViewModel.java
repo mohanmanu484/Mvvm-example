@@ -19,7 +19,7 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
     public static final String TAG = "BaseViewModel";
 
     protected CompositeDisposable compositeDisposable = new CompositeDisposable();
-    
+
     protected LifeCycle.View viewCallback;
 
 
@@ -35,7 +35,7 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
 
     }
 
-    
+
     @CallSuper
     @Override
     public void onViewAttached(@android.support.annotation.NonNull LifeCycle.View viewCallback) {

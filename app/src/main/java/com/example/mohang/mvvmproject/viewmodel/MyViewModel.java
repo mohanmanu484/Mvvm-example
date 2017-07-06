@@ -11,6 +11,9 @@ import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -53,6 +56,8 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
         movieContract.showMessage(movie.getTitle());
 
     }
+
+
 
 
 
