@@ -1,7 +1,5 @@
 package com.example.mohang.mvvmproject.repo;
 
-import android.util.Log;
-
 import com.example.mohang.mvvmproject.models.Movie;
 import com.example.mohang.mvvmproject.models.MoviesResponse;
 import com.example.mohang.mvvmproject.service.MovieServiceManager;
@@ -29,19 +27,22 @@ public class MovieRepository extends NetworkManager {
 
     public Observable<List<Movie>> getMovies() {
 
+//        Log.d(TAG, "getMovies: came in repository");
+
         return handleApiObservable(movieServiceManager.getMovies("66731d2e5d5e953395193ec20af94cac")).map(new Function<MoviesResponse, List<Movie>>() {
             @Override
             public List<Movie> apply(@NonNull MoviesResponse moviesResponse) throws Exception {
                 return moviesResponse.getResults();
             }
         });
+       //return getMoviesFromSqlite();
 
     }
 
 
     public List<Movie> getMyMovies(){
 
-        Log.d(TAG, "getMyMovies: "+Thread.currentThread().getName());
+   //     Log.d(TAG, "getMyMovies: "+Thread.currentThread().getName());
 
         List<Movie> movieList=new ArrayList<>();
         movieList.add(new Movie("test1",1,"test"));

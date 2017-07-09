@@ -19,6 +19,7 @@ import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 public class NetworkManager {
@@ -40,7 +41,9 @@ public class NetworkManager {
                 }*/
 
             }
-        }).retry(new BiPredicate<Integer, Throwable>() {
+        })//.subscribeOn(Schedulers.io())
+                //.observeOn(AndroidSchedulers.mainThread())
+                .retry(new BiPredicate<Integer, Throwable>() {
             @Override
             public boolean test(@NonNull Integer integer, @NonNull Throwable throwable) throws Exception {
                 return DEFAULT_RETRY_ATTEMPT < 3;
@@ -74,12 +77,15 @@ public class NetworkManager {
         return CacheManager.chacheObserver(tag,t.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
-                if (!NetworkManager.this.isNetworkConnected()) {
+               /* if (!NetworkManager.this.isNetworkConnected()) {
                     throw new NoInternetException("Please check internet connection.");
-                }
+                }*/
 
             }
-        }).retry(new BiPredicate<Integer, Throwable>() {
+        }).subscribeOn(Schedulers.io())
+               // .observeOn(AndroidSchedulers.mainThread())
+
+                .retry(new BiPredicate<Integer, Throwable>() {
             @Override
             public boolean test(@NonNull Integer integer, @NonNull Throwable throwable) throws Exception {
                 return DEFAULT_RETRY_ATTEMPT < 3;

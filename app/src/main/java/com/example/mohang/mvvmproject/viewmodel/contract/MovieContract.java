@@ -10,6 +10,7 @@ public interface MovieContract {
 
     interface View extends LifeCycle.View {
 
+        String getUserId();
     }
 
     interface ViewModel extends LifeCycle.ViewModel{

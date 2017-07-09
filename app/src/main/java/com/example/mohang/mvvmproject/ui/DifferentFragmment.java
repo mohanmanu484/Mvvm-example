@@ -20,13 +20,13 @@ import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
  * Created by mohang on 5/7/17.
  */
 
-public class MvvmFragmment extends BaseFragment implements MovieContract.View{
+public class DifferentFragmment extends BaseFragment implements MovieContract.View{
 
 
     MyViewModel myViewModel=new MyViewModel();
 
 
-    public MvvmFragmment() {
+    public DifferentFragmment() {
 
         Log.d(TAG, "MvvmFragmment: fgragment construtor");
     }
@@ -64,6 +64,6 @@ public class MvvmFragmment extends BaseFragment implements MovieContract.View{
 
     @Override
     public String getUserId() {
-        return "1234";
+        return null;
     }
 }

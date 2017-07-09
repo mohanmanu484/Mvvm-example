@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         app:genericLayout="@{@layout/adapter_movie_item}"
         app:actionHandler="@{model}"
+        app:viewTypeHandler="@{model.viewTypeHandler}"
         app:listItem="@{model.observableList}"
         >
 

@@ -2,41 +2,71 @@ package com.example.mohang.mvvmproject
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.example.mohang.mvvmproject.ui.MvvmFragmment
-import io.reactivex.Observable
-import io.reactivex.ObservableSource
-import io.reactivex.ObservableTransformer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.mohang.mvvmproject.viewmodel.BaseViewModel
+import com.example.mohang.mvvmproject.viewmodel.MyViewModel
+import com.example.mohang.mvvmproject.viewmodel.ViewModelHolder
 
 class MainActivity : AppCompatActivity() {
+
+    val MY_VIEW_MODEL_TAG = "MainActivity"
+
+    var   myViewModel:BaseViewModel?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mvvm)
+
+        Log.d(MY_VIEW_MODEL_TAG,"oncreate")
         val fragmentManager = fragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.container, MvvmFragmment())
-        fragmentTransaction.commit()
+        var mvvmFragment = fragmentManager.findFragmentById(R.id.container) ;
 
+        myViewModel=findOrCreateViewModel();
 
-    }
-
-
-    private fun <T> applySchedulers(): ObservableTransformer<T, T> {
-        return mm as ObservableTransformer<T, T>
-    }
-
-
-    var mm: ObservableTransformer<*, *> =  object : ObservableTransformer<Any, Any> {
-
-        override fun apply(upstream: Observable<Any>): ObservableSource<Any> {
-            return upstream.apply { upstream.subscribeOn(Schedulers.io())
-            upstream.observeOn(AndroidSchedulers.mainThread())
-            }
+        if (mvvmFragment == null) {
+            mvvmFragment= MvvmFragmment();
+            fragmentTransaction.add(R.id.container, mvvmFragment)
+            fragmentTransaction.commit()
         }
 
 
 
     }
+
+
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(MY_VIEW_MODEL_TAG,"restart")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        myViewModel?.onDestroy()
+    }
+
+
+
+    public fun findOrCreateViewModel(): MyViewModel? {
+
+        var retainedViewModel = fragmentManager
+                .findFragmentByTag(MY_VIEW_MODEL_TAG) as? ViewModelHolder<MyViewModel>
+
+        if (retainedViewModel != null) {
+            Log.d("debug","not null")
+            return retainedViewModel?.getViewmodel()
+        } else {
+            Log.d("debug","came to else")
+            val viewModel = MyViewModel()
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.add(ViewModelHolder.createContainer(viewModel), MY_VIEW_MODEL_TAG)
+            fragmentTransaction.commit()
+            return viewModel
+        }
+    }
+
+
 }

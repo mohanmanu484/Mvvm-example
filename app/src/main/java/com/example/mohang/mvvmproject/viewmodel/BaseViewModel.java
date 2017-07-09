@@ -1,7 +1,6 @@
 package com.example.mohang.mvvmproject.viewmodel;
 
 import android.support.annotation.CallSuper;
-import android.util.Log;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -39,12 +38,15 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
     @CallSuper
     @Override
     public void onViewAttached(@android.support.annotation.NonNull LifeCycle.View viewCallback) {
+       // Log.d(TAG, "onViewAttached: called");
         this.viewCallback=viewCallback;
     }
 
     @CallSuper
     @Override
     public void onViewDetached() {
+
+    //    Log.d(TAG, "onViewDetached: called");
 
         viewCallback=null;
 
@@ -53,6 +55,10 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
     @CallSuper
     @Override
     public void onDestroy() {
+        clearSubscriptions();
+    }
+
+    private void clearSubscriptions() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
@@ -74,10 +80,14 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
             public ObservableSource<T> apply(Observable<T> upstream) {
                 return (ObservableSource<T>) upstream
                         .compose(addToCompositeDisposable())
-                   //     .compose(applySchedulers())
+                       // .compose(applySchedulers())
                         .compose(showLoadingDialog(viewCallback));
             }
         };
+    }
+
+    protected  <T>Observable<T> backgroundThread(Observable<T> observable) {
+        return observable.compose(this.<T>applySchedulers());
     }
 
 
@@ -138,8 +148,9 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(Disposable disposable) throws Exception {
+                        //        Log.d(TAG, "accept: show");
                                 if(viewCallback!=null) {
-                                    Log.d(TAG, "accept: show");
+
                                     viewCallback.showProgress();
                                 }
                             }
@@ -147,8 +158,9 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
                         .doOnTerminate(new Action() {
                             @Override
                             public void run() throws Exception {
+                           //     Log.d(TAG, "run: hide");
                                 if(viewCallback!=null) {
-                                    Log.d(TAG, "run: hide");
+
                                     viewCallback.hideProgress();
                                 }
                             }
@@ -156,7 +168,7 @@ public  class BaseViewModel implements LifeCycle.ViewModel {
                             @Override
                             public void accept(@NonNull Throwable throwable) throws Exception {
                                 if (viewCallback != null) {
-                                    Log.d(TAG, "accept: error");
+                            //        Log.d(TAG, "accept: error");
                                     viewCallback.showError(throwable);
                                 }
                             }
