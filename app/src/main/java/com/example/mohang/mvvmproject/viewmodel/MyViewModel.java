@@ -3,6 +3,7 @@ package com.example.mohang.mvvmproject.viewmodel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
+import android.util.Log;
 
 import com.example.mohang.mvvmproject.R;
 import com.example.mohang.mvvmproject.models.Car;
@@ -17,6 +18,7 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by mohang on 5/7/17.
@@ -90,38 +92,48 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
     public void loadMovies() {
 
 
-        handleObservable(movieRepository.getMovies(),movieContract).subscribe(new Observer<List<Movie>>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
 
-              //  Log.d(TAG, "onSubscribe: onSubscribe");
-            }
 
-            @Override
-            public void onNext(@NonNull List<Movie> moviesResponse) {
 
-                testString.set(movieContract.getActivityContext().getString(R.string.app_name));
-                observableList.clear();
-                observableList.add(new Car("mohan"));
-                observableList.addAll(moviesResponse);
-            }
+        handleObservable(movieRepository.getMovies())
+                .doOnNext(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(@NonNull List<Movie> movies) throws Exception {
 
-            @Override
-            public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "accept: me "+Thread.currentThread().getName());
+                    }
+                })
+                .subscribe(new Observer<List<Movie>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-               // Log.d(TAG, "onError: onerror called");
-            }
+                    }
 
-            @Override
-            public void onComplete() {
+                    @Override
+                    public void onNext(@NonNull List<Movie> movies) {
 
-              //  Log.d(TAG, "onComplete: oncomplete");
+                        Log.d(TAG, "accept: "+Thread.currentThread().getName());
+                        testString.set(movieContract.getActivityContext().getString(R.string.app_name));
+                        observableList.clear();
+                        observableList.add(new Car("mohan"));
+                        observableList.addAll(movies);
+                    }
 
-            }
-        });
+                    @Override
+                    public void onError(@NonNull Throwable e) {
 
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
-
-
+    @Override
+    public void onViewDetached() {
+        super.onViewDetached();
+        movieContract=null;
+    }
 }

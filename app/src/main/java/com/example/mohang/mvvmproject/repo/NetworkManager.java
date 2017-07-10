@@ -13,6 +13,7 @@ import java.net.HttpRetryException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiPredicate;
@@ -41,8 +42,8 @@ public class NetworkManager {
                 }*/
 
             }
-        })//.subscribeOn(Schedulers.io())
-                //.observeOn(AndroidSchedulers.mainThread())
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .retry(new BiPredicate<Integer, Throwable>() {
             @Override
             public boolean test(@NonNull Integer integer, @NonNull Throwable throwable) throws Exception {
@@ -83,7 +84,7 @@ public class NetworkManager {
 
             }
         }).subscribeOn(Schedulers.io())
-               // .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
 
                 .retry(new BiPredicate<Integer, Throwable>() {
             @Override
