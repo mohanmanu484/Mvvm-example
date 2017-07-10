@@ -8,9 +8,9 @@ import com.example.mohang.mvvmproject.R;
 import com.example.mohang.mvvmproject.models.Car;
 import com.example.mohang.mvvmproject.models.Movie;
 import com.example.mohang.mvvmproject.repo.MovieRepository;
-import com.example.mohang.mvvmproject.ui.adapters.ActionHandler;
-import com.example.mohang.mvvmproject.ui.adapters.ViewTypeHandler;
 import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
+import com.mohang.genericadapter.ActionHandler;
+import com.mohang.genericadapter.ViewTypeHandler;
 
 import java.util.List;
 

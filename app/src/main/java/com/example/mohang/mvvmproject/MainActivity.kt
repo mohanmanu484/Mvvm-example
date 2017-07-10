@@ -56,10 +56,8 @@ class MainActivity : AppCompatActivity() {
                 .findFragmentByTag(MY_VIEW_MODEL_TAG) as? ViewModelHolder<MyViewModel>
 
         if (retainedViewModel != null) {
-            Log.d("debug","not null")
             return retainedViewModel?.getViewmodel()
         } else {
-            Log.d("debug","came to else")
             val viewModel = MyViewModel()
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.add(ViewModelHolder.createContainer(viewModel), MY_VIEW_MODEL_TAG)
