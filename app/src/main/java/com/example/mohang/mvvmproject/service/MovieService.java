@@ -10,7 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
-interface MovieServices {
+public interface MovieService {
         @GET()
         Call<String> universalCall(@Url String url);
 

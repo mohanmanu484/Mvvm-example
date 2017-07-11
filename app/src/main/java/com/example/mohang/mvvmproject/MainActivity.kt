@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.mohang.mvvmproject.ui.MvvmFragmment
 import com.example.mohang.mvvmproject.viewmodel.BaseViewModel
-import com.example.mohang.mvvmproject.viewmodel.MyViewModel
-import com.example.mohang.mvvmproject.viewmodel.ViewModelHolder
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,16 +21,11 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = fragmentManager.beginTransaction()
         var mvvmFragment = fragmentManager.findFragmentById(R.id.container) ;
 
-        myViewModel=findOrCreateViewModel();
-
         if (mvvmFragment == null) {
             mvvmFragment= MvvmFragmment();
             fragmentTransaction.add(R.id.container, mvvmFragment)
             fragmentTransaction.commit()
         }
-
-
-
     }
 
 
@@ -43,28 +36,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
-        myViewModel?.onDestroy()
-    }
-
-
-
-    public fun findOrCreateViewModel(): MyViewModel? {
-
-        var retainedViewModel = fragmentManager
-                .findFragmentByTag(MY_VIEW_MODEL_TAG) as? ViewModelHolder<MyViewModel>
-
-        if (retainedViewModel != null) {
-            return retainedViewModel?.getViewmodel()
-        } else {
-            val viewModel = MyViewModel()
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.add(ViewModelHolder.createContainer(viewModel), MY_VIEW_MODEL_TAG)
-            fragmentTransaction.commit()
-            return viewModel
-        }
-    }
 
 
 }

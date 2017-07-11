@@ -1,6 +1,8 @@
 package com.example.mohang.mvvmproject.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,6 +24,8 @@ public abstract class BaseFragment extends Fragment implements LifeCycle.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+        getViewModel().onCreate();
         Log.d(TAG, "onCreate: "
         );
     }
@@ -37,31 +41,39 @@ public abstract class BaseFragment extends Fragment implements LifeCycle.View {
         Log.d(TAG, "onResume: ");
     }
 
+
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onAttach(Context context) {
+        super.onAttach(context);
         getViewModel().onViewAttached(this);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        getViewModel().onViewDetached();
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        getViewModel().onViewAttached(this);
     }
 
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getViewModel().onViewDetached();
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getViewModel().onDestroy();
+        Log.d(TAG, "onDestroyView: ");
+        //getViewModel().onDestroy();
 
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-       // getViewModel().onDestroy();
+        getViewModel().onDestroy();
 
         Log.d(TAG, "onDestroy: ");
     }

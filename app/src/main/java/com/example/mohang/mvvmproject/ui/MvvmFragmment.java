@@ -11,10 +11,13 @@ import android.view.ViewGroup;
 
 import com.example.mohang.mvvmproject.R;
 import com.example.mohang.mvvmproject.databinding.FragmentMvvmBinding;
+import com.example.mohang.mvvmproject.repo.App;
 import com.example.mohang.mvvmproject.viewmodel.BaseViewModel;
 import com.example.mohang.mvvmproject.viewmodel.LifeCycle;
 import com.example.mohang.mvvmproject.viewmodel.MyViewModel;
 import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
+
+import javax.inject.Inject;
 
 /**
  * Created by mohang on 5/7/17.
@@ -23,12 +26,16 @@ import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
 public class MvvmFragmment extends BaseFragment implements MovieContract.View{
 
 
-    MyViewModel myViewModel=new MyViewModel();
+    @Inject
+    MyViewModel myViewModel;
 
 
     public MvvmFragmment() {
 
-        Log.d(TAG, "MvvmFragmment: fgragment construtor");
+        Log.d(TAG, "MvvmFragmment: constructor");
+
+        App.getInstance().component().inject(this);
+
     }
 
 

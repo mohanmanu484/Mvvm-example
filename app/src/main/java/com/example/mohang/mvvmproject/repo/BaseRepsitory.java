@@ -1,9 +1,5 @@
 package com.example.mohang.mvvmproject.repo;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.example.mohang.mvvmproject.exceptions.NoInternetException;
 import com.example.mohang.mvvmproject.exceptions.ServerRuntimeException;
 import com.example.mohang.mvvmproject.exceptions.UrlNotFoundException;
@@ -23,21 +19,25 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-public class NetworkManager {
+public class BaseRepsitory {
 
 
     private boolean isRequesting;
-    public static final String TAG = "NetworkManager";
+    public static final String TAG = "BaseRepsitory";
 
     private int DEFAULT_RETRY_ATTEMPT = 3;
 
+
+    public boolean test(){
+        return false;
+    }
 
     protected <T> Observable<T> handleApiObservable(Observable<Response<T>> t) {
 
         return t.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
-               /* if (!NetworkManager.this.isNetworkConnected()) {
+               /* if (!BaseRepsitory.this.isNetworkConnected()) {
                     throw new NoInternetException("Please check internet connection.");
                 }*/
 
@@ -78,7 +78,7 @@ public class NetworkManager {
         return CacheManager.chacheObserver(tag,t.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
-               /* if (!NetworkManager.this.isNetworkConnected()) {
+               /* if (!BaseRepsitory.this.isNetworkConnected()) {
                     throw new NoInternetException("Please check internet connection.");
                 }*/
 
@@ -109,14 +109,6 @@ public class NetworkManager {
         }),cache);
 
     }
-
-    public boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) App.getInstance()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
-    }
-
 
 
     private <T> ObservableSource<T> handleHttpError(Throwable throwable) throws RuntimeException {

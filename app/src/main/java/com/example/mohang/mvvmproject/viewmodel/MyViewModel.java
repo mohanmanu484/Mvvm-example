@@ -15,6 +15,8 @@ import com.mohang.genericadapter.ViewTypeHandler;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -24,13 +26,19 @@ import io.reactivex.functions.Consumer;
  * Created by mohang on 5/7/17.
  */
 
+
 public class MyViewModel extends BaseViewModel implements ActionHandler {
 
 
 
-    MovieRepository movieRepository = new MovieRepository();
+    MovieRepository movieRepository;
 
-    // RecyclerConfiguration recyclerConfiguration=new RecyclerConfigurationImpl()
+
+    @Inject
+    public MyViewModel(MovieRepository movieRepository) {
+        this.movieRepository=movieRepository;
+        Log.d(TAG, "MyViewModel: constructor ");
+    }
 
     public ObservableList<Object> observableList = new ObservableArrayList<>();
     public ObservableField<String> testString=new ObservableField<>("");
@@ -43,8 +51,6 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
             if(item instanceof Car){
                 return R.layout.car_layout;
             }
-
-
             return R.layout.adapter_movie_item;
         }
     };
@@ -53,10 +59,7 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
     public ObservableField<String> test=new ObservableField<>("a");
     public MovieContract.View movieContract;
 
-    public MyViewModel() {
 
-       // Log.d(TAG, "MyViewModel: //////////// construtot ////////////////////");
-    }
 
 
     @Override
@@ -77,7 +80,6 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
 
     public void onMovieClick(Movie movie){
         movieContract.showMessage(movie.getTitle());
-
         movieContract.getUserId();
 
     }
@@ -86,14 +88,9 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
     public void onViewResumed() {
         super.onViewResumed();
         loadMovies();
-      //  loadMovies();
     }
 
     public void loadMovies() {
-
-
-
-
 
         handleObservable(movieRepository.getMovies())
                 .doOnNext(new Consumer<List<Movie>>() {
