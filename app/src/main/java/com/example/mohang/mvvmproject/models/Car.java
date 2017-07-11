@@ -12,7 +12,7 @@ public class Car {
         this.namel = namel;
     }
 
-    public String getNamel() {
+    public String getName() {
         return namel;
     }
 

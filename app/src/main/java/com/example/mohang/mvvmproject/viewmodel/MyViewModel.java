@@ -3,7 +3,6 @@ package com.example.mohang.mvvmproject.viewmodel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
-import android.util.Log;
 
 import com.example.mohang.mvvmproject.R;
 import com.example.mohang.mvvmproject.models.Car;
@@ -37,7 +36,6 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
     @Inject
     public MyViewModel(MovieRepository movieRepository) {
         this.movieRepository=movieRepository;
-        Log.d(TAG, "MyViewModel: constructor ");
     }
 
     public ObservableList<Object> observableList = new ObservableArrayList<>();
@@ -74,7 +72,7 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
 
     public String getNAme(Car car){
 
-        return car.getNamel();
+        return car.getName();
 
     }
 
@@ -97,7 +95,6 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
                     @Override
                     public void accept(@NonNull List<Movie> movies) throws Exception {
 
-                        Log.d(TAG, "accept: me "+Thread.currentThread().getName());
                     }
                 })
                 .subscribe(new Observer<List<Movie>>() {
@@ -108,8 +105,6 @@ public class MyViewModel extends BaseViewModel implements ActionHandler {
 
                     @Override
                     public void onNext(@NonNull List<Movie> movies) {
-
-                        Log.d(TAG, "accept: "+Thread.currentThread().getName());
                         testString.set(movieContract.getActivityContext().getString(R.string.app_name));
                         observableList.clear();
                         observableList.add(new Car("mohan"));

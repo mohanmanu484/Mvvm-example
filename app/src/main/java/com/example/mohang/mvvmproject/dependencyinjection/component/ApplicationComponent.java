@@ -4,6 +4,7 @@ package com.example.mohang.mvvmproject.dependencyinjection.component;
 import com.example.mohang.mvvmproject.dependencyinjection.module.AppModule;
 import com.example.mohang.mvvmproject.dependencyinjection.module.NetworkModule;
 import com.example.mohang.mvvmproject.repo.App;
+import com.example.mohang.mvvmproject.repo.MovieRepository;
 import com.example.mohang.mvvmproject.ui.MvvmFragmment;
 
 import javax.inject.Singleton;
@@ -25,5 +26,5 @@ public interface ApplicationComponent {
     void inject(MvvmFragmment mvvmFragmment);
 
 
-
+    void inject(MovieRepository movieRepository);
 }

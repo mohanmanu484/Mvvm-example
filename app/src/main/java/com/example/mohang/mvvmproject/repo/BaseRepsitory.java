@@ -9,6 +9,7 @@ import java.net.HttpRetryException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -19,13 +20,15 @@ import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
-public class BaseRepsitory {
+public abstract class BaseRepsitory {
 
 
     private boolean isRequesting;
     public static final String TAG = "BaseRepsitory";
 
     private int DEFAULT_RETRY_ATTEMPT = 3;
+
+
 
 
     public boolean test(){
@@ -37,14 +40,20 @@ public class BaseRepsitory {
         return t.doOnSubscribe(new Consumer<Disposable>() {
             @Override
             public void accept(@NonNull Disposable disposable) throws Exception {
-               /* if (!BaseRepsitory.this.isNetworkConnected()) {
+               /* if (!Utility.isNetworkConnected()) {
                     throw new NoInternetException("Please check internet connection.");
                 }*/
 
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retry(new BiPredicate<Integer, Throwable>() {
+        }).compose(new ObservableTransformer<Response<T>, Response<T>>() {
+            @Override
+            public ObservableSource<Response<T>> apply(@NonNull Observable<Response<T>> upstream) {
+                if(!runOnMainThread()){
+                   return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                }
+                return upstream;
+            }
+        }).retry(new BiPredicate<Integer, Throwable>() {
             @Override
             public boolean test(@NonNull Integer integer, @NonNull Throwable throwable) throws Exception {
                 return DEFAULT_RETRY_ATTEMPT < 3;
@@ -66,6 +75,9 @@ public class BaseRepsitory {
             }
         });
     }
+
+
+    public abstract boolean runOnMainThread();
 
 
 

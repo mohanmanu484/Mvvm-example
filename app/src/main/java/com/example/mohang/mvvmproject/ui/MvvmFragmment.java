@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.example.mohang.mvvmproject.R;
 import com.example.mohang.mvvmproject.databinding.FragmentMvvmBinding;
 import com.example.mohang.mvvmproject.repo.App;
-import com.example.mohang.mvvmproject.viewmodel.BaseViewModel;
 import com.example.mohang.mvvmproject.viewmodel.LifeCycle;
 import com.example.mohang.mvvmproject.viewmodel.MyViewModel;
 import com.example.mohang.mvvmproject.viewmodel.contract.MovieContract;
@@ -45,13 +44,8 @@ public class MvvmFragmment extends BaseFragment implements MovieContract.View{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
 
-      //  myViewModel=((MainActivity)getActivity()).findOrCreateViewModel();
-
-
-
         FragmentMvvmBinding fragmentMvvmBinding=DataBindingUtil.inflate(inflater, R.layout.fragment_mvvm,container,false);
         fragmentMvvmBinding.setModel(myViewModel);
-       // myViewModel.onCreate();
         return fragmentMvvmBinding.getRoot();
     }
 
@@ -63,10 +57,6 @@ public class MvvmFragmment extends BaseFragment implements MovieContract.View{
     @Override
     public LifeCycle.ViewModel getViewModel() {
         return myViewModel;
-    }
-
-    public void setViewModel(BaseViewModel myViewModel){
-       // this.myViewModel=myViewModel;
     }
 
     @Override

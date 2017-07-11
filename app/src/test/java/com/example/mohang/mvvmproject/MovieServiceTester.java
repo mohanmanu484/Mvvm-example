@@ -1,6 +1,7 @@
-package com.example.mohang.mvvmproject.service;
+package com.example.mohang.mvvmproject;
 
 
+import com.example.mohang.mvvmproject.service.MovieService;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -62,5 +63,6 @@ public class MovieServiceTester {
                     }
                 });
     }
+
 
 }

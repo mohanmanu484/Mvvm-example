@@ -11,6 +11,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -77,8 +79,13 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    MovieService providePropertyApiService(Retrofit retrofit) {
+    MovieService provideMovieApiService(Retrofit retrofit) {
         return retrofit.create(MovieService.class);
+    }
+
+    @Provides
+    Scheduler provideScheduler(){
+        return AndroidSchedulers.mainThread();
     }
 
 }

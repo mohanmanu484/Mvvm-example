@@ -17,11 +17,12 @@ import io.reactivex.functions.Function;
  * Created by mohang on 5/7/17.
  */
 
-public class MovieRepository extends BaseRepsitory {
+public  class MovieRepository extends BaseRepsitory {
 
 
 
     MovieService movieService;
+
 
 
     @Inject
@@ -39,19 +40,6 @@ public class MovieRepository extends BaseRepsitory {
                 return moviesResponse.getResults();
             }
         });
-
-    }
-
-
-    public List<Movie> getMyMovies(){
-
-   //     Log.d(TAG, "getMyMovies: "+Thread.currentThread().getName());
-
-        List<Movie> movieList=new ArrayList<>();
-        movieList.add(new Movie("test1",1,"test"));
-        movieList.add(new Movie("test2",2,null));
-
-        return movieList;
 
     }
 
@@ -79,12 +67,8 @@ public class MovieRepository extends BaseRepsitory {
     }
 
 
-
-
-
-
-
-
-
-
+    @Override
+    public boolean runOnMainThread() {
+        return false;
+    }
 }
