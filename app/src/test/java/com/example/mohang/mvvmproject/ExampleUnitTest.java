@@ -1,6 +1,7 @@
 package com.example.mohang.mvvmproject;
 
 import android.content.Context;
+import android.util.LruCache;
 
 import com.example.mohang.mvvmproject.models.Movie;
 import com.example.mohang.mvvmproject.repo.MovieRepository;
@@ -55,6 +56,7 @@ public class ExampleUnitTest  {
     public void setUp() throws Exception {
 
         PowerMockito.mockStatic(Utility.class);
+        PowerMockito.mock(LruCache.class);
         MockitoAnnotations.initMocks(this);
     }
 

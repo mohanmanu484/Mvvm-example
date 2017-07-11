@@ -95,8 +95,15 @@ public abstract class BaseRepsitory {
                 }*/
 
             }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        }).compose(new ObservableTransformer<Response<T>, Response<T>>() {
+            @Override
+            public ObservableSource<Response<T>> apply(@NonNull Observable<Response<T>> upstream) {
+                if(!runOnMainThread()){
+                    return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                }
+                return upstream;
+            }
+        })
 
                 .retry(new BiPredicate<Integer, Throwable>() {
             @Override
